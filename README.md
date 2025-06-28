@@ -4,7 +4,7 @@ Repository Contents
 ---
 MoE_XGB_Calling_Code.py: Python script to load the pre-trained MoE-XGB model and make predictions.
 
-MoE-XGB.pickle: Pre-trained model file (download from [Zenodo link] if not included due to file size).
+MoE-XGB.pickle: Pre-trained model file .
 
 requirements.txt: List of required Python dependencies.
 
@@ -101,7 +101,6 @@ Ensure MoE-XGB.pickle is compatible with the xgboost version specified in requir
 
 The model assumes input parameters are in the units specified above (e.g., km, degrees, m/s).
 
-For large MoE-XGB.pickle files, use Git LFS or download from [Zenodo link].
 
 Contact
 ---
