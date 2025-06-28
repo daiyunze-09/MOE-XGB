@@ -106,7 +106,7 @@ The model assumes input parameters are in the units specified above (e.g., km, d
 
 Contact
 ---
-For questions or issues, please open an issue on the GitHub repository: https://github.com/yourusername/MoE-XGB.
+For questions or issues, please open an issue on the GitHub repository: https://github.com/daiyunze-09/MoE-XGB.
 
 
 
