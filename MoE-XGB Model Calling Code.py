@@ -13,7 +13,7 @@ Instructions:
 - Modify the parameters between the "====" sections as indicated.
 - The code between "****" sections is for calculations and should not be changed.
 '''
-# 导入 EarthquakeMoE 和 GatingNetwork 类
+
 from MoExgb_pickle import EarthquakeMoE, GatingNetwork
 from matplotlib import pyplot as plt
 import pickle
@@ -30,7 +30,7 @@ plt.rc('font', family='Times New Roman', size=20)
 # Change the path to the MoE-XGB.pickle file downloaded from the repository.
 # Example: r'C:\Users\YourName\Desktop\MoE-XGB.pickle'
 
-modelFilePath = r'F:\戴云泽\SDEE论文代码\论文\C&G\github\MOE-xgb.pickle'
+modelFilePath = r'F:\daiyunze\github\MOE-xgb.pickle'
 # ===========================================================================
 
 # 2. Set the ground motion input parameters
@@ -64,12 +64,12 @@ X = [Depth_km, Mag, Rhypo, Vs30, Station_Lat, Station_Long, Long, Lat, Station_H
 # 3. Set the path for the model prediction data output (TXT format)
 # If empty, no TXT file will be saved. Output file name: SA-output.txt
 # Example: r'C:\Users\YourName\Desktop'
-txtFilePath = r'F:\戴云泽\SDEE论文代码\论文\C&G\github'
+txtFilePath = r'F:\daiyunze\github\github'
 
 # 4. Set the path for the attenuation curve image (PNG format)
 # If empty, no image will be saved. Output file name: SA-figure.png
 # Example: r'C:\Users\YourName\Desktop'
-curveFilePath = r'F:\戴云泽\SDEE论文代码\论文\C&G\github'
+curveFilePath = r'F:\daiyunze\github\github'
 # ===========================================================================
 
 # Define periods for output (PGA and spectral accelerations)
@@ -90,41 +90,41 @@ try:
     print(f"Loading model from: {modelFilePath}")
     with open(modelFilePath, 'rb') as file:
         model = pickle.load(file)
-    print("模型加载成功")
+    print("Model loaded successfully")
 
-    # 获取模型的特征列名
+    # Get the feature column names of the model
     if hasattr(model, 'feature_columns'):
         feature_columns = model.feature_columns
-        print(f"模型特征列: {feature_columns}")
+        print(f"Model feature columns: {feature_columns}")
     else:
-        # 如果模型没有保存特征列名，使用默认特征列名
+        # If the model does not save feature column names, use the default feature column names
         feature_columns = ['Depth. (km)', 'Mag.', 'Rhypo', 'Vs30', 'Station Lat.',
                            'Station Long.', 'Long.', 'Lat.', 'Station Height(m)', 'mech']
-        print(f"使用默认特征列: {feature_columns}")
+        print(f"Using default feature columns: {feature_columns}")
 
-    # 创建包含输入数据的DataFrame
+    # Creating a DataFrame with input data
     input_df = pd.DataFrame([X], columns=feature_columns)
-    print("输入数据:")
+    print("input data:")
     print(input_df)
 
 except Exception as e:
-    print(f"加载模型时发生错误: {e}")
-    print("请检查模型文件路径是否正确，文件是否完整")
+    print(f"An error occurred while loading the model: {e}")
+    print("Please check if the model file path is correct and the file is complete")
     sys.exit(1)
 
 # Predict using the input parameters for each SA period
-# 预测部分代码
+# Predicting partial code
 modelPre = []
 try:
-    for period in XName:  # 直接使用周期字符串
+    for period in XName:  # Use the periodic string directly
         print(f"Predicting for period: {period}")
-        prediction = model.predict(input_df, period)  # 传入周期字符串
+        prediction = model.predict(input_df, period)  # Pass in the cycle string
         modelPre.append(prediction[0])
-    print("所有周期预测完成")
+    print("All cycle forecasts completed")
 
 except Exception as e:
-    print(f"预测过程中发生错误: {e}")
-    print("请检查输入数据格式是否正确")
+    print(f"Errors in the forecasting process: {e}")
+    print("Please check if the input data format is correct")
     sys.exit(1)
 
 # Convert to numpy array for consistency
@@ -161,12 +161,12 @@ if txtFilePath and os.path.exists(txtFilePath):
                     output.write("{:^10} {:^15.3f}\n".format('PGA', SA))
                 else:
                     output.write("{:^10} {:^15.3f}\n".format(period.replace('SA', ''), SA))
-        print(f'输出文件已保存至 {output_file}')
+        print(f'The output file has been saved to the {output_file}')
     except Exception as e:
-        print(f"保存TXT文件时出错: {e}")
+        print(f"Error saving TXT file: {e}")
 elif txtFilePath:
-    print(f'\033[1;31;40m提示: 路径 {txtFilePath} 在您的计算机上不存在。\033[0m')
-    print("如果您不需要输出文件，请忽略此消息。")
+    print(f'\033[1;31;40mError: Path {txtFilePath} does not exist on your computer.\033[0m')
+    print("Ignore this message if you do not need the output file.")
 # ****************************************************************************
 
 # Plot and save attenuation curve (if specified)
@@ -186,7 +186,7 @@ try:
     plt.ylabel('Spectral Acceleration, SA (gal)', fontsize=20)
     plt.title('Attenuation Curve', fontsize=16)
 
-    # 添加参数信息
+    # Add parameter information
     param_text = (f'Depth = {X[0]} km\nMagnitude = {X[1]}\n'
                   f'Rhypo = {X[2]} km\nVs30 = {X[3]} m/s\n'
                   f'Station: Lat = {X[4]}°, Lon = {X[5]}°\n'
@@ -196,22 +196,22 @@ try:
                  bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="gray", alpha=0.8),
                  fontsize=10)
 
-    # 添加版权信息
+    # Add copyright information
     plt.figtext(0.5, 0.01, '© MoE-XGB Model Prediction',
                 ha='center', fontsize=10, color='gray')
 
-    # 保存图像
+    # Save Image
     if curveFilePath and os.path.exists(curveFilePath):
         output_image = os.path.join(curveFilePath, 'SA-figure.png')
         plt.savefig(output_image, bbox_inches='tight')
-        print(f'衰减曲线已保存至 {output_image}')
+        print(f'The decay curve has been saved to {output_image}')
     elif curveFilePath:
-        print(f'\033[1;31;40m提示: 路径 {curveFilePath} 在您的计算机上不存在。\033[0m')
-        print("如果您不需要输出图像，请忽略此消息。")
+        print(f'\033[1;31;40mTip: The path {curveFilePath} does not exist on your computer.\033[0m')
+        print("Ignore this message if you do not need to output an image.")
 
-    # 显示图像
+    # Show image
     plt.show()
 
 except Exception as e:
-    print(f"绘制衰减曲线时出错: {e}")
+    print(f"Error while plotting decay curve: {e}")
 # ****************************************************************************
